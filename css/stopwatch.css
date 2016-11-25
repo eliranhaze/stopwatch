@@ -1,0 +1,13 @@
+body {
+    background-color: #F8F8F8;
+    padding-top: 65px;
+    font-family: Alef;
+    font-size: large;
+    color: #444 !important;
+}
+
+.time {
+    font-family: 'Anonymous Pro', monospace;
+    font-size: 180% !important;
+}
+
