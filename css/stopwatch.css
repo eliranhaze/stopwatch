@@ -1,7 +1,7 @@
 body {
     background-color: #F8F8F8;
     padding-top: 65px;
-    font-family: Alef;
+    font-family: 'Alef';
     font-size: large;
     color: #444 !important;
 }
@@ -11,3 +11,9 @@ body {
     font-size: 180% !important;
 }
 
+.details {
+    float: left;
+    margin-right: -1000px;
+    font-size: 87%;
+    color: #666;
+}

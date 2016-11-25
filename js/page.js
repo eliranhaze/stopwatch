@@ -1,6 +1,7 @@
 var btnStart = $('#start');
 var btnClear = $('#clear');
 var pTime = $('#time');
+var details = $('#details');
 
 $(document).ready(function() {
     btnStart.one('click', start);
@@ -22,6 +23,7 @@ function start() {
     sw.start();
     btnStart.text('pause'); 
     btnStart.one('click', pause);
+    details.text(dateStr(sw.date));
 }
 function pause() {
     sw.pause();
@@ -37,5 +39,12 @@ function clear() {
     sw.stop();
     btnStart.text('start'); 
     btnStart.one('click', start);
+    details.text('');
 }
 
+function dateStr(date) {
+    var h = str(date.getHours());
+    var m = str(date.getMinutes());
+    var s = str(date.getSeconds());
+    return h + ':' + m + ':' + s;
+}

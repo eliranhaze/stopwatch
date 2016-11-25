@@ -2,6 +2,7 @@
 function Stopwatch(observer) {
     this.started = false;
     this.paused = false;
+    this.date = null;
     this.t1 = 0;
     this.ms = 0;
     this.receipt = null;
@@ -12,6 +13,7 @@ Stopwatch.prototype.start = function() {
     if (!this.started) {
         this.started = true;
         this.go();
+        this.date = new Date();
         console.log('started at ' + this.t1);
     }
 }
