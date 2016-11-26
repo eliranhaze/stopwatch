@@ -11,9 +11,17 @@ body {
     font-size: 180% !important;
 }
 
+.ms {
+    font-family: 'Anonymous Pro', monospace;
+    font-size: 70% !important;
+    margin-top: -15px;
+    margin-bottom: 5px;
+}
+
 .details {
     float: left;
     margin-right: -1000px;
     font-size: 87%;
     color: #666;
+    text-align: left;
 }
