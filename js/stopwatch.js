@@ -2,7 +2,6 @@
 function Stopwatch(observer) {
     this.started = false;
     this.paused = false;
-    this.date = null;
     this.t1 = 0;
     this.ms = 0;
     this.receipt = null;
@@ -13,13 +12,10 @@ Stopwatch.prototype.start = function() {
     if (!this.started) {
         this.started = true;
         this.go();
-        this.date = new Date();
-        console.log('started at ' + this.t1);
     }
 }
 
 Stopwatch.prototype.pause = function() {
-    console.log('pausing');
     if (this.started && !this.paused) {
         this.paused = true;
         this.ms += this.current();
@@ -28,7 +24,6 @@ Stopwatch.prototype.pause = function() {
 }
 
 Stopwatch.prototype.resume = function() {
-    console.log('resuming');
     if (this.started && this.paused) {
         this.go();
     }
@@ -62,11 +57,10 @@ Stopwatch.prototype.total = function() {
 }
 
 Stopwatch.prototype.timer = function() {
-    console.log('timer: ' + this.started + ',' + this.paused + ' ' + this);
     if (this.started && !this.paused) {
         this.notify();
         // set next execution and bind this method to fix context
-        this.receipt = setTimeout(this.timer.bind(this), 500);
+        this.receipt = setTimeout(this.timer.bind(this), 17);
     }
 }
 
@@ -75,22 +69,21 @@ Stopwatch.prototype.clearTimer = function() {
 }
 
 Stopwatch.prototype.notify = function() {
-    this.observer(this.toString());
+    var ms = str(this.total() % 1000, 3);
+    this.observer(this.toString(), ms);
 }
 
 Stopwatch.prototype.toString = function() {
-   var sec = Math.floor(this.total() / 1000);
-   var h = Math.floor(sec / 60 / 60);
-   var m = Math.floor((sec - (h * 60 * 60)) / 60);
-   var s = sec - (h * 60 * 60) - (m * 60);
-   return str(h) + ':' + str(m) + ':' + str(s);
+    var sec = Math.floor(this.total() / 1000);
+    var h = Math.floor(sec / 60 / 60);
+    var m = Math.floor((sec - (h * 60 * 60)) / 60);
+    var s = sec - (h * 60 * 60) - (m * 60);
+    return str(h) + ':' + str(m) + ':' + str(s);
 }
 
-function str(n) {
-    if (n < 10) {
-        return '0'+n;
-    }
-    return n.toString();
+function str(n, count) {
+    count = count || 2;
+    return ('0'.repeat(count)+n).slice(-count);
 }
 
 function now() {
