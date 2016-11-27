@@ -3,6 +3,7 @@ var btnClear = $('#clear');
 var pTime = $('#time');
 var pMs = $('#ms');
 var details = $('#details');
+var sum = $('#sum');
 
 // TODO: store stuff with localStorage
 $(document).ready(function() {
@@ -26,20 +27,33 @@ function start() {
     sw.start();
     btnStart.text('pause'); 
     btnStart.one('click', pause);
-    details.html(dateStr(date()));
+    updPct();
+    details.html(timeStr(date()));
 }
+
 function pause() {
     sw.pause();
     btnStart.text('resume'); 
     btnStart.one('click', resume);
-    details.html(details.html() + '-' + dateStr(date()));
+    updPct();
+    details.html(details.html() + '-' + timeStr(date()));
 }
+
+function updPct() {
+    var abs = now() - sw.absStart;
+    var total = sw.total();
+    var pct = round(100 * (total / abs), 1);
+    sum.text('pct: ' + pct + '%');
+}
+
 function resume() {
     sw.resume();
     btnStart.text('pause'); 
     btnStart.one('click', pause);
-    details.html(details.html() + '<br>' + dateStr(date()));
+    updPct();
+    details.html(details.html() + '<br>' + timeStr(date()));
 }
+
 function clear() {
     sw.stop();
     btnStart.text('start'); 
@@ -47,15 +61,5 @@ function clear() {
     btnStart.off('click', pause);
     btnStart.off('click', resume);
     details.text('');
-}
-
-function dateStr(date) {
-    var h = str(date.getHours());
-    var m = str(date.getMinutes());
-    var s = str(date.getSeconds());
-    return h + ':' + m + ':' + s;
-}
-
-function date() {
-    return new Date();
+    sum.text('');
 }

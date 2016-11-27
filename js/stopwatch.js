@@ -1,25 +1,22 @@
 
 function Stopwatch(observer) {
-    this.started = false;
-    this.paused = false;
-    this.t1 = 0;
-    this.ms = 0;
-    this.receipt = null;
+    this.init();
     this.observer = observer;
 }
 
 Stopwatch.prototype.start = function() {
     if (!this.started) {
         this.started = true;
+        this.absStart = now();
         this.go();
     }
 }
 
 Stopwatch.prototype.pause = function() {
     if (this.started && !this.paused) {
-        this.paused = true;
         this.ms += this.current();
         this.clearTimer();
+        this.paused = true; // must be last
     }
 }
 
@@ -31,23 +28,30 @@ Stopwatch.prototype.resume = function() {
 
 Stopwatch.prototype.go = function() {
     this.paused = false;
-    this.t1 = now();
+    this.currentStart = now();
     this.timer();
 }
 
 Stopwatch.prototype.stop = function() {
     if (this.started) {
-        this.started = false;
-        this.t1 = 0;
-        this.ms = 0;
+        this.init();
         this.notify();
         this.clearTimer();
     }
 }
 
+Stopwatch.prototype.init = function() {
+    this.paused = false;
+    this.started = false;
+    this.absStart = 0;
+    this.currentStart = 0;
+    this.ms = 0;
+    this.receipt = null;
+}
+
 Stopwatch.prototype.current = function() {
-    if (this.started) {
-        return now() - this.t1;
+    if (this.started && !this.paused) {
+        return now() - this.currentStart;
     }
     return 0;
 }
@@ -69,7 +73,7 @@ Stopwatch.prototype.clearTimer = function() {
 }
 
 Stopwatch.prototype.notify = function() {
-    var ms = str(this.total() % 1000, 3);
+    var ms = zeropad(this.total() % 1000, 3);
     this.observer(this.toString(), ms);
 }
 
@@ -78,14 +82,5 @@ Stopwatch.prototype.toString = function() {
     var h = Math.floor(sec / 60 / 60);
     var m = Math.floor((sec - (h * 60 * 60)) / 60);
     var s = sec - (h * 60 * 60) - (m * 60);
-    return str(h) + ':' + str(m) + ':' + str(s);
-}
-
-function str(n, count) {
-    count = count || 2;
-    return ('0'.repeat(count)+n).slice(-count);
-}
-
-function now() {
-    return Date.now();
+    return zeropad(h) + ':' + zeropad(m) + ':' + zeropad(s);
 }

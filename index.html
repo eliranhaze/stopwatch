@@ -11,6 +11,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css?family=Anonymous+Pro|Alef" rel="stylesheet">
 
+    <script src="js/utils.js"></script>
     <script src="js/stopwatch.js"></script>
     <link rel="stylesheet" href="css/stopwatch.css">
   </head>
@@ -20,7 +21,10 @@
        <div class="panel panel-default">
          <div class="panel-body" style="text-align: center;">
 
-           <p id="details" class="details"></p> 
+           <div class="details">
+             <p id="sum"></p> 
+             <p id="details"></p> 
+           </div>
            <p id="time" class="time">00:00:00</p><p id="ms" class="ms">000</p>
            <button id="start" class="btn btn-default">start</button>
            <button id="clear" class="btn btn-default">clear</button>
