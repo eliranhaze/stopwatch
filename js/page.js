@@ -47,13 +47,6 @@ function pause() {
     details.html(details.html() + '-' + timeStr(date()));
 }
 
-function updPct() {
-    var abs = now() - sw.absStart;
-    var total = sw.total();
-    var pct = round(100 * (total / abs), 1);
-    sum.text('pct: ' + pct + '%');
-}
-
 function resume() {
     sw.resume();
     btnStart.text('pause'); 
@@ -74,3 +67,14 @@ function clear() {
         started = false;
     }
 }
+
+function updPct() {
+    var abs = now() - sw.absStart;
+    var total = sw.total();
+    var pct = round(100 * (total / abs), 1);
+    if (total == 0) {
+        var pct = 100;
+    }
+    sum.text('pct: ' + pct + '%');
+}
+
