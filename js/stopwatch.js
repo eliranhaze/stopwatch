@@ -1,3 +1,4 @@
+TIMING_RATE = 17; // ms
 
 function Stopwatch(observer) {
     this.init();
@@ -64,7 +65,7 @@ Stopwatch.prototype.timer = function() {
     if (this.started && !this.paused) {
         this.notify();
         // set next execution and bind this method to fix context
-        this.receipt = setTimeout(this.timer.bind(this), 17);
+        this.receipt = setTimeout(this.timer.bind(this), TIMING_RATE);
     }
 }
 
