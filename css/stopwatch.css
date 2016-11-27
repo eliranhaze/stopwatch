@@ -1,7 +1,7 @@
 body {
     background-color: #F8F8F8;
     padding-top: 65px;
-    font-family: 'Alef';
+    font-family: 'Anonymous Pro', monospace;
     font-size: large;
     color: #444 !important;
 }
@@ -21,7 +21,7 @@ body {
 .details {
     float: left;
     margin-right: -1000px;
-    font-size: 87%;
+    font-size: 85%;
     color: #666;
     text-align: left;
 }
