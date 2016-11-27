@@ -1,9 +1,14 @@
+
+// elements
 var btnStart = $('#start');
 var btnClear = $('#clear');
 var pTime = $('#time');
 var pMs = $('#ms');
 var details = $('#details');
 var sum = $('#sum');
+
+// state
+var started = false;
 
 // TODO: store stuff with localStorage
 $(document).ready(function() {
@@ -24,11 +29,14 @@ function observer(text, ms) {
 var sw = new Stopwatch(observer);
 
 function start() {
-    sw.start();
-    btnStart.text('pause'); 
-    btnStart.one('click', pause);
-    updPct();
-    details.html(timeStr(date()));
+    if (!started) {
+        sw.start();
+        btnStart.text('pause'); 
+        btnStart.one('click', pause);
+        updPct();
+        details.html(timeStr(date()));
+        started = true;
+    }
 }
 
 function pause() {
@@ -55,11 +63,14 @@ function resume() {
 }
 
 function clear() {
-    sw.stop();
-    btnStart.text('start'); 
-    btnStart.one('click', start);
-    btnStart.off('click', pause);
-    btnStart.off('click', resume);
-    details.text('');
-    sum.text('');
+    if (started) {
+        sw.stop();
+        btnStart.text('start'); 
+        btnStart.one('click', start);
+        btnStart.off('click', pause);
+        btnStart.off('click', resume);
+        details.text('');
+        sum.text('');
+        started = false;
+    }
 }
