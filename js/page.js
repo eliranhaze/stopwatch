@@ -75,6 +75,6 @@ function updPct() {
     if (total == 0) {
         var pct = 100;
     }
-    sum.text('pct: ' + pct + '%');
+    sum.text(pct + '%');
 }
 
