@@ -10,9 +10,12 @@ var SPREADSHEET_ID = '1vdCniswTZHnMOgVZe3GS_tzvZtgctes1OkPKCD8LP4o';
 
 var btnLogin = $('#login');
 var btnLogout = $('#logout');
+var pnlUpdate = $('#upd-pnl');
+var frmUpdate = $('#upd-frm');
 var btnUpdate = $('#update');
 var txtTitle = $('#title');
 var selType = $('#type');
+var pInit = $('#init');
 
 function handleClientLoad() {
     gapi.load('client:auth2', initClient);
@@ -33,25 +36,34 @@ function initClient() {
     });
 }
 
+function updateSigninStatus(isSignedIn) {
+    pInit.hide();
+    if (isSignedIn) {
+        btnLogin.hide();
+        btnLogout.show();
+        frmUpdate.show();
+        initSignedIn();
+    } else {
+        btnLogin.show();
+        btnLogout.hide();
+        frmUpdate.hide();
+    }
+}
+
 function initUI() {
-    btnLogin.click(handleAuthClick);
-    btnLogout.click(handleSignoutClick);
+    btnLogin.click(function() {
+        gapi.auth2.getAuthInstance().signIn();
+    });
+    btnLogout.click(function() {
+        gapi.auth2.getAuthInstance().signOut();
+    });
     btnUpdate.click(update);
     btnUpdate.on('click', function() {
         btnUpdate.blur();
     });
-//    read('Art!B4:E', function(values) {
-//        var titles = [];
-//        for (i = 0; i < values.length; i++) {
-//            var row = values[i];
-//            if (row[3] != '1') { // not done
-//                titles.push(row[1]);  // title
-//            }
-//        }
-//        txtTitle.autocomplete({
-//            source: titles
-//        });
-//    });
+}
+
+function initSignedIn() {
     read('Log!A2:C', function(values) {
         var titles = new Set();
         var currently = now();
@@ -82,24 +94,6 @@ function parseDate(str) {
 
 function daysDiff(date1, date2) {
     return (date1 - date2)/1000/60/60/24;
-}
-
-function updateSigninStatus(isSignedIn) {
-    if (isSignedIn) {
-        btnLogin.hide();
-        btnLogout.show();
-    } else {
-        btnLogin.show();
-        btnLogout.hide();
-    }
-}
-
-function handleAuthClick(event) {
-    gapi.auth2.getAuthInstance().signIn();
-}
-
-function handleSignoutClick(event) {
-    gapi.auth2.getAuthInstance().signOut();
 }
 
 function log(message) {

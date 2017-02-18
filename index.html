@@ -31,17 +31,20 @@
           <button id="clear" class="btn btn-default">clear</button>
         </div>
       </div>
-      <div class="panel panel-default">
+      <div id ="upd-pnl" class="panel panel-default" style="text-align: center;">
+        <p id="init" style="margin: 0; padding: 14px 0 0 0;">
+          checking session...
+        </p>
         <div class="panel-body" style="text-align: center;">
           <div class="form-inline">
-            <div class="form-group">
+            <div id="upd-frm" class="form-group" style="display: none;">
               <input id="title" class="form-control" placeholder="title" size=50 maxlength=100>
               <select class="form-control" id="type">
                 <option>R</option>
                 <option>S</option>
               </select>
+              <button id="update" class="btn btn-default">update</button>
             </div>
-            <button id="update" class="btn btn-default">update</button>
             <button id="login" class="btn btn-primary" style="display: none;">login</button>
             <button id="logout" class="btn btn-primary" style="display: none;">logout</button>
           </div>

@@ -2,18 +2,17 @@ body {
     background-color: #F8F8F8;
     padding-top: 65px;
     font-family: 'Anonymous Pro', monospace;
-    font-size: large;
     color: #444 !important;
 }
 
 .time {
     font-family: 'Anonymous Pro', monospace;
-    font-size: 180% !important;
+    font-size: 232% !important;
 }
 
 .ms {
     font-family: 'Anonymous Pro', monospace;
-    font-size: 70% !important;
+    font-size: 91% !important;
     margin-top: -15px;
     margin-bottom: 5px;
 }
@@ -21,7 +20,7 @@ body {
 .details {
     float: left;
     margin-right: -1000px;
-    font-size: 85%;
+    font-size: 110%;
     color: #666;
     text-align: left;
 }
