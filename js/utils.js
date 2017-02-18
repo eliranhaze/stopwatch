@@ -21,6 +21,14 @@ function timeStr(date) {
     return h + ':' + m + ':' + s;
 }
 
+function todayStr() {
+    var today = date();
+    var d = zeropad(today.getDate());
+    var m = zeropad(today.getMonth()+1);
+    var y = zeropad(today.getYear());
+    return d + '/' + m + '/' + y;
+}
+
 ///////////////////////////////////////////////////////////////
 // string utils
 

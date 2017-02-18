@@ -61,6 +61,10 @@ Stopwatch.prototype.total = function() {
     return this.ms + this.current();
 }
 
+Stopwatch.prototype.minutes = function() {
+    return this.total() / 1000 / 60;
+}
+
 Stopwatch.prototype.timer = function() {
     if (this.started && !this.paused) {
         this.notify();
