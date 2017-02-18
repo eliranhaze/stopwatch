@@ -25,3 +25,18 @@ body {
     color: #666;
     text-align: left;
 }
+
+/* jquery ui stuff */
+
+.ui-autocomplete {
+    background: #fff;
+    border-radius: 0px;
+    font-size: small;
+    font-family: 'Anonymous Pro', monospace;
+}
+
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active, a.ui-button:active, .ui-button:active, .ui-state-active.ui-button:hover {
+  border: 1px solid #f0f0f0; 
+  background: #f1f1f1;
+  color: #333;
+}
