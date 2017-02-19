@@ -37,6 +37,7 @@ function initClient() {
 }
 
 function updateSigninStatus(isSignedIn) {
+    log('updating sign in status');
     pInit.hide();
     if (isSignedIn) {
         btnLogin.hide();
@@ -108,11 +109,12 @@ function update() {
         log('not adding: ' + name + ', ' + value);
         return;
     }
-    updateLog(type, name, value);
-    clearForm();
+    updateLog(type, name, value, function() {
+        clearForm()
+    });
 }
 
-function updateLog(type, name, value) {
+function updateLog(type, name, value, then) {
     var row = [todayStr(), type, name, value];
     log('adding: ' + row);
     gapi.client.sheets.spreadsheets.values.append({
@@ -124,6 +126,7 @@ function updateLog(type, name, value) {
         var updates = JSON.parse(response.body)['updates'];
         log(updates);
         log('added ' + updates['updatedRows'] + ' rows at ' + updates['updatedRange']);
+        then();
     }, handleError);
 }
 
