@@ -65,6 +65,10 @@ function initUI() {
 }
 
 function initSignedIn() {
+    loadTitles();
+}
+
+function loadTitles() {
     read('Log!A2:C', function(values) {
         var titles = new Set();
         var currently = now();
@@ -110,7 +114,8 @@ function update() {
         return;
     }
     updateLog(type, name, value, function() {
-        clearForm()
+        clearForm();
+        loadTitles();
     });
 }
 
