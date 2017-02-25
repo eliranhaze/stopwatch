@@ -14,6 +14,16 @@ function now() {
     return Date.now();
 }
 
+function startOfMonth() {
+    var today = date(); 
+    return new Date(today.getFullYear(), today.getMonth(), 1);
+}
+
+function startOfWeek() {
+    var today = date(); 
+    return new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay());
+}
+
 function timeStr(date) {
     var h = zeropad(date.getHours());
     var m = zeropad(date.getMinutes());

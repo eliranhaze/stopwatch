@@ -16,6 +16,15 @@ var btnUpdate = $('#update');
 var txtTitle = $('#title');
 var selType = $('#type');
 var pInit = $('#init');
+var tTotalHours = $('#total-hours');
+var tMonthHours = $('#month-hours');
+var tWeekHours = $('#week-hours');
+var tTotalUtil = $('#total-util');
+var tMonthUtil = $('#month-util');
+var tWeekUtil = $('#week-util');
+
+// from page.js
+clearTime = clear;
 
 function handleClientLoad() {
     gapi.load('client:auth2', initClient);
@@ -65,28 +74,59 @@ function initUI() {
 }
 
 function initSignedIn() {
-    loadTitles();
+    loadItems();
 }
 
-function loadTitles() {
-    read('Log!A2:C', function(values) {
-        var titles = new Set();
-        var currently = now();
+function loadItems() {
+    read('Log!A2:D', function(values) {
+        var totalHours = 0;
+        var monthHours = 0;
+        var weekHours = 0;
+        var titles = new Set(); // for autocomplete
+        var today = date();
+        var firstDate = null;
+        var firstDateMonth = startOfMonth();
+        var firstDateWeek = startOfWeek();
         for (i = 0; i < values.length; i++) {
             var row = values[i];
-            if (daysDiff(currently, parseDate(row[0])) < 14) {
-                titles.add(row[2]);  // title
+            var itemDate = parseDate(row[0]);
+            var itemHours = parseFloat(row[3]);
+            if (firstDate == null) {
+                firstDate = itemDate;
+            }
+            // stats
+            totalHours += itemHours;
+            if (daysDiff(itemDate, firstDateMonth) >= 0) {
+                monthHours += itemHours;
+            }
+            if (daysDiff(itemDate, firstDateWeek) >= 0) {
+                weekHours += itemHours;
+            }
+            // autocomplete
+            if (daysDiff(today, itemDate) < 14) {
+                titles.add(row[2]);
             }
         }
+        log('adding ' + titles.size + ' titles to autocomplete');
         txtTitle.autocomplete({
             source: Array.from(titles)
         });
+        tTotalHours.html(totalHours.toFixed(1));
+        tMonthHours.html(monthHours.toFixed(1));
+        tWeekHours.html(weekHours.toFixed(1));
+        tTotalUtil.html(pct(totalHours, hoursDiff(today, firstDate)));
+        tMonthUtil.html(pct(monthHours, hoursDiff(today, firstDateMonth)));
+        tWeekUtil.html(pct(weekHours, hoursDiff(today, firstDateWeek)));
     });
 }
 
 function clearForm() {
     txtTitle.val('');
     selType.removeAttr('selected');
+}
+
+function pct(x, y) {
+    return (100*x/y).toFixed(1) + '%';
 }
 
 function parseDate(str) {
@@ -98,7 +138,11 @@ function parseDate(str) {
 }
 
 function daysDiff(date1, date2) {
-    return (date1 - date2)/1000/60/60/24;
+    return hoursDiff(date1, date2)/24;
+}
+
+function hoursDiff(date1, date2) {
+    return (date1 - date2)/1000/60/60;
 }
 
 function log(message) {
@@ -115,7 +159,8 @@ function update() {
     }
     updateLog(type, name, value, function() {
         clearForm();
-        loadTitles();
+        clearTime();
+        loadItems();
     });
 }
 
@@ -136,21 +181,22 @@ function updateLog(type, name, value, then) {
 }
 
 function read(range, then) {
+    log('fetching ' + range);
     gapi.client.sheets.spreadsheets.values.get({
         spreadsheetId: SPREADSHEET_ID,
         range: range,
     }).then(function(response) {
-        log(response.body);
-        var range = response.result;
-        if (range.values.length > 0) {
-            then(range.values);
+        var values = response.result.values;
+        if (values.length > 0) {
+            log('read ' + values.length + ' rows');
+            then(values);
         } else {
-            log('No data found.');
+            log('no data found');
         }
     }, handleError);
 }
 
 function handleError(response) {
-    log('Error: ' + response.result.error.message);
+    log('error: ' + response.result.error.message);
 }
 
