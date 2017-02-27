@@ -30,6 +30,31 @@ body {
     margin-top: 15px;
 }
 
+/* highlighting */
+
+@keyframes glowGood {
+    30% {
+	color: #2E2;
+	text-shadow: 0 0 0px #1E1;
+    }
+}
+@keyframes glowBad {
+    30% {
+	color: #E22;
+	text-shadow: 0 0 0px #E11;
+    }
+}
+.glow-good {
+    animation-name: glowGood;
+    animation-duration: 2s;
+    animation-timing-function: linear;
+}
+.glow-bad {
+    animation-name: glowBad;
+    animation-duration: 2s;
+    animation-timing-function: linear;
+}
+
 /* jquery ui stuff */
 
 .ui-autocomplete {

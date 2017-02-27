@@ -22,6 +22,7 @@ var tWeekHours = $('#week-hours');
 var tTotalUtil = $('#total-util');
 var tMonthUtil = $('#month-util');
 var tWeekUtil = $('#week-util');
+var statItems = [tTotalHours, tMonthHours, tWeekHours, tTotalUtil, tMonthUtil, tWeekUtil];
 
 // from page.js
 clearTime = clear;
@@ -111,12 +112,42 @@ function loadItems() {
         txtTitle.autocomplete({
             source: Array.from(titles)
         });
+	// get previous stats
+	var prevStats = {};
+	for (item of statItems) {
+	   if (item.html() != "") {
+	       prevStats[item[0].id] = parseFloat(item.html());
+	       console.log('prev for ' + item[0].id + ' is ' + parseFloat(item.html()));
+	   }
+	}
+	// update stats
         tTotalHours.html(totalHours.toFixed(1));
         tMonthHours.html(monthHours.toFixed(1));
         tWeekHours.html(weekHours.toFixed(1));
         tTotalUtil.html(pct(totalHours, hoursDiff(today, firstDate)));
         tMonthUtil.html(pct(monthHours, hoursDiff(today, firstDateMonth)));
         tWeekUtil.html(pct(weekHours, hoursDiff(today, firstDateWeek)));
+	// compare stats for highlights
+	for (item of statItems) {
+	   var prev = prevStats[item[0].id];
+	   if (prev) {
+	       var cur = parseFloat(item.html());
+	       console.log('cur for ' + item[0].id + ' is ' + cur);
+	       if (cur > prev) {
+	           highlight(item, 'good');
+	       } else if (cur < prev) {
+	           highlight(item, 'bad');
+	       }
+	   }
+	}
+    });
+}
+
+function highlight(element, type) {
+    var cls = 'glow-' + type;
+    element.addClass(cls);
+    element.on('animationend MSAnimationEnd webkitAnimationEnd oAnimationEnd', function(){
+        element.removeClass(cls);
     });
 }
 
