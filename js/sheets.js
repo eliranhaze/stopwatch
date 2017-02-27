@@ -13,6 +13,7 @@ var btnLogout = $('#logout');
 var pnlUpdate = $('#upd-pnl');
 var frmUpdate = $('#upd-frm');
 var btnUpdate = $('#update');
+var btnRefresh = $('#refresh');
 var txtTitle = $('#title');
 var selType = $('#type');
 var pInit = $('#init');
@@ -71,6 +72,10 @@ function initUI() {
     btnUpdate.click(update);
     btnUpdate.on('click', function() {
         btnUpdate.blur();
+    });
+    btnRefresh.click(refresh);
+    btnRefresh.on('click', function() {
+        btnRefresh.blur();
     });
 }
 
@@ -178,6 +183,10 @@ function hoursDiff(date1, date2) {
 
 function log(message) {
     console.log(message);
+}
+
+function refresh() {
+    loadItems();
 }
 
 function update() {
