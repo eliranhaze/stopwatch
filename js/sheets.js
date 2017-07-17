@@ -48,7 +48,7 @@ function initClient() {
 }
 
 function updateSigninStatus(isSignedIn) {
-    log('updating sign in status');
+    log('updating sign in status: ' + isSignedIn);
     pInit.hide();
     if (isSignedIn) {
         btnLogin.hide();
