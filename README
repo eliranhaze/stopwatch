@@ -1,0 +1,3 @@
+for local dev:
+- run server: ./server
+- visit page: localhost:8000
