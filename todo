@@ -1,1 +1,11 @@
 map between type and title so that it remembers type upon title selection
+
+add categories:
+- reading: general
+- reading: philosophy
+- research: reading
+- research: writing
+
+show in page breakdown by categories
+
+show top 3 time most spent items/categories week/month or last 7/30 days
