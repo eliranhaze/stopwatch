@@ -84,6 +84,15 @@ function initSignedIn() {
 }
 
 function loadItems() {
+
+    // add category options
+    read('Projects!G2:G7', function(values) {
+        for (i = 0; i < values.length; i++) {
+            selType.append($("<option />").text(values[i]));
+        }
+    });
+
+    // fetch time data and last items
     read('Log!A2:D', function(values) {
         var totalHours = 0;
         var monthHours = 0;
