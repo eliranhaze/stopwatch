@@ -87,7 +87,7 @@ function loadItems() {
 
     // add category options if empty
     if (selType.find('option').length == 0) {
-        read('Projects!G2:G7', function(values) {
+        read('Categories!A2:A7', function(values) {
             for (i = 0; i < values.length; i++) {
                 selType.append($("<option />").text(values[i]));
             }
