@@ -87,7 +87,7 @@ function loadItems() {
 
     // add category options if empty
     if (selType.find('option').length == 0) {
-        read('Categories!A2:A7', function(values) {
+        read('Categories!A2:A', function(values) {
             for (i = 0; i < values.length; i++) {
                 selType.append($("<option />").text(values[i]));
             }
@@ -96,6 +96,7 @@ function loadItems() {
 
     // fetch time data and last items
     // TODO: as sheet gets larger, should optimize by reading fully only last items, and just times for the rest (or even an aggregate of times).
+    //       this would save response size and time, and processing here.
     read('Log!A2:D', function(values) {
         var totalHours = 0;
         var monthHours = 0;
