@@ -47,7 +47,7 @@
                   <thead>
                     <tr>
                       <th>stats</th>
-                      <th>
+                      <th style="width:30%">
                         <button id="refresh" type="button" class="btn btn-default btn-xs">
                           <span class="glyphicon glyphicon-refresh"></span>
                         </button>
@@ -56,11 +56,9 @@
                   </thead>
                   <tbody>
                     <tr><td>total hours</td><td id="total-hours"></td></tr>
-                    <tr><td>total util</td><td id="total-util"></td></tr>
                     <tr><td>month hours</td><td id="month-hours"></td></tr>
-                    <tr><td>month util</td><td id="month-util"></td></tr>
                     <tr><td>week hours</td><td id="week-hours"></td></tr>
-                    <tr><td>week util</td><td id="week-util"></td></tr>
+                    <tr><td>day hours</td><td id="day-hours"></td></tr>
                   </tbody>
                 </table>
               </div>
@@ -79,12 +77,6 @@
     <script async defer src="https://apis.google.com/js/api.js"
       onload="this.onload=function(){};handleClientLoad()"
       onreadystatechange="if (this.readyState === 'complete') this.onload()">
-    </script>
-    <script>
-    window.onbeforeunload = function(evt) {
-	// ask before closing window
-        return true;
-    }
     </script>
   </body>
 </html>

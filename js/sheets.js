@@ -20,10 +20,8 @@ var pInit = $('#init');
 var tTotalHours = $('#total-hours');
 var tMonthHours = $('#month-hours');
 var tWeekHours = $('#week-hours');
-var tTotalUtil = $('#total-util');
-var tMonthUtil = $('#month-util');
-var tWeekUtil = $('#week-util');
-var statItems = [tTotalHours, tMonthHours, tWeekHours, tTotalUtil, tMonthUtil, tWeekUtil];
+var tDayHours = $('#day-hours');
+var statItems = [tTotalHours, tMonthHours, tWeekHours, tDayHours];
 
 // from page.js
 clearTime = clear;
@@ -94,33 +92,57 @@ function loadItems() {
         });
     }
 
-    // fetch time data and last items
-    // TODO: as sheet gets larger, should optimize by reading fully only last items, and just times for the rest (or even an aggregate of times).
-    //       this would save response size and time, and processing here.
-    read('Log!A2:D', function(values) {
-        var totalHours = 0;
-        var monthHours = 0;
-        var weekHours = 0;
+    read('Data!A1:B8', function(values) {
+	    // TODO: generate rows and their labels from the data instead of having them hardcoded
+        var totalHours = values[0][1]; // B1
+        var totalUtil = values[1][1]; // B2
+        var totalStr = `${totalHours}h (${totalUtil})`;
+        var monthHours = values[2][1]; // B3
+        var monthUtil = values[3][1]; // B4
+        var monthStr = `${monthHours}h (${monthUtil})`;
+        var weekHours =  values[4][1]; // B5
+        var weekUtil =  values[5][1]; // B6
+        var weekStr = `${weekHours}h (${weekUtil})`;
+        var dayHours =  values[6][1]; // B7
+        var dayUtil =  values[7][1]; // B8
+        var dayStr = `${dayHours}h (${dayUtil})`;
+
+	// get previous stats
+	var prevStats = {};
+	for (item of statItems) {
+	   if (item.html() != "") {
+	       prevStats[item[0].id] = parseFloat(item.html());
+	       log('prev for ' + item[0].id + ' is ' + parseFloat(item.html()));
+	   }
+	}
+	// update stats
+        tTotalHours.html(totalStr);
+        tMonthHours.html(monthStr);
+        tWeekHours.html(weekStr);
+        tDayHours.html(dayStr);
+
+	// compare stats for highlights
+	for (item of statItems) {
+	   var prev = prevStats[item[0].id];
+	   if (prev) {
+	       var cur = parseFloat(item.html());
+	       log('cur for ' + item[0].id + ' is ' + cur);
+	       if (cur > prev) {
+	           highlight(item, 'good');
+	       } else if (cur < prev) {
+	           highlight(item, 'bad');
+	       }
+	   }
+	}
+    });
+
+    // fetch items for autocomplete (start later for some efficiency)
+    read('Log!A1800:C', function(values) {
         var titles = new Set(); // for autocomplete
         var today = date();
-        var firstDate = null;
-        var firstDateMonth = startOfMonth();
-        var firstDateWeek = startOfWeek();
         for (i = 0; i < values.length; i++) {
             var row = values[i];
             var itemDate = parseDate(row[0]);
-            var itemHours = parseFloat(row[3]);
-            if (firstDate == null) {
-                firstDate = itemDate;
-            }
-            // stats
-            totalHours += itemHours;
-            if (daysDiff(itemDate, firstDateMonth) >= 0) {
-                monthHours += itemHours;
-            }
-            if (daysDiff(itemDate, firstDateWeek) >= 0) {
-                weekHours += itemHours;
-            }
             // autocomplete
             if (daysDiff(today, itemDate) < 14) {
                 titles.add(row[2]);
@@ -130,34 +152,6 @@ function loadItems() {
         txtTitle.autocomplete({
             source: Array.from(titles)
         });
-	// get previous stats
-	var prevStats = {};
-	for (item of statItems) {
-	   if (item.html() != "") {
-	       prevStats[item[0].id] = parseFloat(item.html());
-	       console.log('prev for ' + item[0].id + ' is ' + parseFloat(item.html()));
-	   }
-	}
-	// update stats
-        tTotalHours.html(totalHours.toFixed(1));
-        tMonthHours.html(monthHours.toFixed(1));
-        tWeekHours.html(weekHours.toFixed(1));
-        tTotalUtil.html(pct(totalHours, hoursDiff(today, firstDate)));
-        tMonthUtil.html(pct(monthHours, hoursDiff(today, firstDateMonth)));
-        tWeekUtil.html(pct(weekHours, hoursDiff(today, firstDateWeek)));
-	// compare stats for highlights
-	for (item of statItems) {
-	   var prev = prevStats[item[0].id];
-	   if (prev) {
-	       var cur = parseFloat(item.html());
-	       console.log('cur for ' + item[0].id + ' is ' + cur);
-	       if (cur > prev) {
-	           highlight(item, 'good');
-	       } else if (cur < prev) {
-	           highlight(item, 'bad');
-	       }
-	   }
-	}
     });
 }
 
@@ -241,7 +235,7 @@ function read(range, then) {
     }).then(function(response) {
         var values = response.result.values;
         if (values.length > 0) {
-            log('read ' + values.length + ' rows');
+            log('read ' + values.length + ' rows from ' + range);
             then(values);
         } else {
             log('no data found');
