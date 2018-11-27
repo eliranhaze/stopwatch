@@ -28,6 +28,12 @@ function observer(text, ms) {
 }
 var sw = new Stopwatch(observer);
 
+window.onbeforeunload = function(e) {
+    // ask before closing window if watch has started (return nothing otherwise)
+    if (sw.total() > 0)
+        return true;
+}
+
 function start() {
     if (!started) {
         sw.start();
