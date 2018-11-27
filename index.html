@@ -80,6 +80,12 @@
       onload="this.onload=function(){};handleClientLoad()"
       onreadystatechange="if (this.readyState === 'complete') this.onload()">
     </script>
+    <script>
+    window.onbeforeunload = function(evt) {
+	// ask before closing window
+        return true;
+    }
+    </script>
   </body>
 </html>
 
