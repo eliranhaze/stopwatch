@@ -156,6 +156,32 @@ function loadItems() {
             source: Array.from(titles)
         });
     });
+
+    read('Data!G2:H6', function(values) {
+        createGraph('#grf-days', values, "Days", "Hours");
+    });
+
+    read('Data!J2:K6', function(values) {
+        createGraph('#grf-weeks', values, 'Weeks', 'Hours');
+    });
+}
+
+function createGraph(containerId, values, xLabel, yLabel) {
+    var data = new Array();
+    var order = new Array();
+    for (i = 0; i < values.length; i++) {
+        var row = values[i];
+        data[i] = {[xLabel]: row[0], [yLabel]: row[1]};
+        order[i] = row[0];
+    }
+    log('data ' + JSON.stringify(data));
+    var svg = dimple.newSvg(containerId, 500, 350);
+    var chart = new dimple.chart(svg, data);
+    var x = chart.addCategoryAxis("x", xLabel);
+    x.addOrderRule(order);
+    chart.addMeasureAxis("y", yLabel);
+    chart.addSeries(null, dimple.plot.line);
+    chart.draw();
 }
 
 function highlight(element, type) {
