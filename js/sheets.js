@@ -11,7 +11,6 @@ var SPREADSHEET_ID = '1vdCniswTZHnMOgVZe3GS_tzvZtgctes1OkPKCD8LP4o';
 var btnLogin = $('#login');
 var btnLogout = $('#logout');
 var pnlUpdate = $('#upd-pnl');
-var pnlGraphs = $('#grf-pnl');
 var frmUpdate = $('#upd-frm');
 var btnUpdate = $('#update');
 var btnRefresh = $('#refresh');
@@ -53,13 +52,11 @@ function updateSigninStatus(isSignedIn) {
         btnLogin.hide();
         btnLogout.show();
         frmUpdate.show();
-        pnlGraphs.show();
         initSignedIn();
     } else {
         btnLogin.show();
         btnLogout.hide();
         frmUpdate.hide();
-        pnlGraphs.hide();
     }
 }
 
